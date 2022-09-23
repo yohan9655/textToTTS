@@ -15,4 +15,4 @@ e. Run command -
 node Take_home_assignment. 
 ```
 f. If the build is successful you will see that it runs on Port 3030.  
-g. Open a browser and type in http://localhost:3030/  
+g. Open a browser and type in http://localhost:3030/
