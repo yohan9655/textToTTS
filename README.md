@@ -20,6 +20,11 @@ f. If the build is successful, you will see it runs on Port 3030.
 g. Open a browser and type in http://localhost:3030/
 ## This code is also being hosted on Render.
 https://text-to-tts.onrender.com/audio
-## Please note this is being hosted on the free tier platform Render offers. As such, the website will be inactive when there are no hits to it in 15 min. Please allow some time after the first hit for the page to load.
+## Please note this is being hosted on the free tier platform Render offers. As such, the website will be inactive when there are no hits to it in 15 min. Please allow some time after the first hit for the page to load.  
+## Images  
+### Homepage  
 ![alt text](https://github.com/yohan9655/textToTTS/blob/main/images/1.png?raw=true)
-
+### Passing text to Polly.  
+![alt text](https://github.com/yohan9655/textToTTS/blob/main/images/2.png?raw=true)
+### Storing multiple audio files.  
+![alt text](https://github.com/yohan9655/textToTTS/blob/main/images/3.png?raw=true)
