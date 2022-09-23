@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <h1 align="center">Text to TTS Conversion</h1>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style/styles.css">
+    <meta charset="UTF-8">
+    <title>TTS Audio</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.410.0.min.js"></script>
+    <script>
+        AWS.config.region = "us-west-1";
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: 'us-west-1:609718e9-7404-428e-a394-2594cc23b51f',
+        });
+    </script>
+
+    <script>
+      let urlGlobal = []
+      let audioPlayback = -1
+      let urlIndex = -1
+      let polly = new AWS.Polly({apiVersion: '2016-06-10'});
+
+      var laqnguageCodes = ["en-AU", "en-GB", "en-GB-WLS", "en-IN", "en-US", "en-NZ", "en-ZA"]
+      var i = 1;
+      laqnguageCodes.forEach(function (item, index) {
+        var params = {
+        LanguageCode: item
+        };
+        polly.describeVoices(params, function(err, data) {
+          if (err) console.log(err, err.stack); // an error occurred
+          else{
+            var select = document.getElementById('selectElementId');
+            voices = data['Voices']
+            //console.log(voices);
+            for (const [key, value] of Object.entries(voices)) {
+              for (const [key1, value1] of Object.entries(value)) {
+                if(key1=='Id'){
+                  console.log('in select');
+                  var opt = document.createElement('option');
+                  opt.value = i;
+                  opt.innerHTML = value1;
+                  select.appendChild(opt);
+                  i+=1;
+                }
+              }
+            }
+          }
+        });
+      });
+
+
+
+      function speakText() {
+          var speechParams = {
+              OutputFormat: "mp3",
+              SampleRate: "16000",
+              Text: "",
+              TextType: "text",
+              VoiceId: ''
+          };
+
+          speechParams.Text = document.getElementById("textEntry").value;
+          select = document.getElementById("selectElementId");
+          speechParams.VoiceId = select.options[select.selectedIndex].text;
+          var listGroup = document.getElementById("listGroup")
+          let signer = new AWS.Polly.Presigner(speechParams, polly)
+
+          signer.getSynthesizeSpeechUrl(speechParams, function(error, url) {
+            console.log(url)
+            urlGlobal.push(url)
+            urlIndex += 1
+            if (error) {
+                document.getElementById('resultText').innerHTML = error;
+            } else {
+              audioPlayback = audioPlayback+1
+              audioPlaybackString = 'audioPlayback' +audioPlayback.toString()
+              console.log(audioPlaybackString);
+              listGroup.innerHTML += "<a class='list-group-item'> <div class='d-flex' id='mediaID'><div class='flex-shrink-0'><img class='float-left' src='https://www.openhab.org/logos/pollytts.png' alt='Generic placeholder image'></div><div class='flex-grow-1 ms-3'><h5 class='mt-0' id='Speech ready to play.'>Audio File " + (urlIndex+1).toString() + "</h5><div class='grid'><div class='column'><audio id="+audioPlaybackString+" controlsList='nodownload' controls><source id='audioSource' type='audio/mp3' src="+url+"></audio></div><div class='column'><button onclick='fetchFile(urlGlobal["+urlIndex.toString()+"])' id='downloadButton' class='btn btn-primary'>Download</button></div></div></div></div></a>";
+              document.getElementById(audioPlaybackString).load();  
+          }
+        });
+      }
+    </script>
+
+    <script type="text/javascript">
+      function fetchFile(url) {
+    fetch(url).then(res => res.blob()).then(file => {
+        let tempUrl = URL.createObjectURL(file);
+        const aTag = document.createElement("a");
+        aTag.href = tempUrl;
+        var d = new Date(Date.now());
+        aTag.download = d.toString() + '.mp3';
+        document.body.appendChild(aTag);
+        aTag.click();
+        URL.revokeObjectURL(tempUrl);
+        aTag.remove();
+    }).catch(() => {
+        alert("Failed to download file!");
+        downloadBtn.innerText = "Download File";
+    });
+}
+    </script>
+
+   
+  </head>
+
+  <body>
+    <div class="grid">
+      <div class="row">
+        <div id="textToSynth" class="form-outline">
+          <form class="needs-validation" action="javascript:speakText()" novalidate>
+            <div class="row mb-3">
+              <label for="textEntry" id = "inputText" class="col-sm-2 col-form-label">Enter text below to return a TTS mp3 file</label>
+              <div class="col-sm-10">
+                <input autofocus size="23" type="text" id="textEntry" class="form-control" required/>
+                <div class="invalid-feedback">
+                  Please provide a valid input.
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputVoice" class="col-sm-2 col-form-label" id = "inputText2">Voice</label>
+              <div class="col-sm-10">
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="selectElementId" required>
+                </select>
+              </div>
+            </div>
+            <button id="btnDefault" class="btn btn-primary" type="submit">Synthesize</button>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="list-group" id="listGroup">
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    (function () {
+      'use strict'
+      var forms = document.querySelectorAll('.needs-validation')
+      console.log(forms)
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              console.log('hey')
+              event.preventDefault()
+              event.stopPropagation()
+            }
+            console.log('hello')
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+    })()
+
+  </script>
+
+</html>

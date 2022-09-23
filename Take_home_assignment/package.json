@@ -1,0 +1,14 @@
+{
+  "name": "ict_assignment",
+  "version": "1.0.0",
+  "description": "Simple nodeJS project to return and save a TTS audio file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yohan Varghese Kuriakose",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-polly": "^3.171.0"
+  }
+}
