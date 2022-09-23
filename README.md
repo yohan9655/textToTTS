@@ -1,4 +1,6 @@
 # textToTTS
+Project to convert Text input to a TTS audio file. Conversion to TTS audio file is done by AWS Polly -
+https://aws.amazon.com/polly/
 ## To run code on local, follow the steps below -  
 a. Clone project into the local repository.  
 b. Open a terminal window and navigate to the inside of Take_home_assignment folder.  
