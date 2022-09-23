@@ -16,6 +16,6 @@ node Take_home_assignment.
 ```
 f. If the build is successful, you will see it runs on Port 3030.  
 g. Open a browser and type in http://localhost:3030/
-## This code is also being hosted on render
+## This code is also being hosted on Render.
 https://text-to-tts.onrender.com/audio
-## Please note this is being hosted on the free tier platform render offers. As such, the website will be inactive when there are no hits to it in 15 min. Please allow some time after the first hit for the page to load.
+## Please note this is being hosted on the free tier platform Render offers. As such, the website will be inactive when there are no hits to it in 15 min. Please allow some time after the first hit for the page to load.
