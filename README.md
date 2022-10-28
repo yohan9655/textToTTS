@@ -18,8 +18,7 @@ e. Run command -
 node Take_home_assignment. 
 ```
 f. If the build is successful, you will see it runs on Port 3030.  
-g. Open a browser and type in http://localhost:3030/
-## Please note this is being hosted on the free tier platform Render offers. As such, the website will be inactive when there are no hits to it in 15 min. Please allow some time after the first hit for the page to load.  
+g. Open a browser and type in http://localhost:3030/  
 ## Images  
 ### Homepage  
 ![alt text](https://github.com/yohan9655/textToTTS/blob/main/images/1.png?raw=true)
